@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Customers</title>
+</head>
+<body>
+
+<h3>Filter</h3>
+
+<form th:method="GET" th:action="@{/customers}" th:object="${customerFilter}">
+
+    <table border="0" cellpadding="1">
+        <tr>
+            <td><label for="limit">Enter limit:</label></td>
+            <td><input type="number" th:field="*{limit}" id="limit"/>
+                <div style="color: red" th:if="${#fields.hasErrors('limit')}" th:errors="*{limit}">Limit error</div>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="offset">Enter offset:</label></td>
+            <td><input type="number" th:field="*{offset}" id="offset"/>
+                <div style="color: red" th:if="${#fields.hasErrors('offset')}" th:errors="*{offset}">Offset error</div>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="tabnum">Enter tabnum:</label></td>
+            <td><input type="number" th:field="*{tabnum}" id="tabnum"/>
+                <div style="color: red" th:if="${#fields.hasErrors('tabnum')}" th:errors="*{tabnum}">Tabnum error</div>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="name">Enter name:</label></td>
+            <td><input type="text" th:field="*{name}" id="name"/>
+                <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="surname">Enter surname:</label></td>
+            <td><input type="text" th:field="*{surname}" id="surname"/>
+                <div style="color: red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Surname error</div>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="email">Enter email:</label></td>
+            <td><input type="text" th:field="*{email}" id="email"/>
+                <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="birth">Enter birth:</label></td>
+            <td><input type="date" th:field="*{birth}" id="birth"/>
+                <div style="color: red" th:if="${#fields.hasErrors('birth')}" th:errors="*{birth}">Birth error</div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <button type="submit">Filter</button>
+            </td>
+        </tr>
+
+    </table>
+</form>
+<br/>
+
+<a href="/customers"><input type="submit" value="All customers"/></a>
+&nbsp;&nbsp;
+<a href="/autos"><input type="submit" value="All autos"/></a>
+&nbsp;&nbsp;
+<a href="/customers/new"><input type="submit" value="Create new customer"/></a>
+
+<hr/>
+
+<table border="1" cellpadding="5">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Tabnum</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Email</th>
+        <th>Date of birth</th>
+        <th>Number of autos</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tbody th:each="customer : ${customers}">
+
+    <tr>
+
+        <td>
+            <a th:href="@{/customers/{id}(id=${customer.getId()})}"
+               th:text="${customer.getId()}"></a>
+        </td>
+        <td th:text="${customer.getTabnum()}"></td>
+        <td th:text="${customer.getName()}"></td>
+        <td th:text="${customer.getSurname()}"></td>
+        <td th:text="${customer.getEmail()}"></td>
+        <td th:text="${customer.getBirth()}"></td>
+        <td th:text="${customer.getAutos().size()}"></td>
+        <td>
+            <form th:method="DELETE" th:action="@{/customers/{id}(id=${customer.getId()})}">
+
+                <a th:href="@{/customers/{id}/edit(id=${customer.getId()})}">Edit</a>
+                &nbsp;&nbsp;&nbsp;
+
+                <input type="submit" value="Delete"/></form>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

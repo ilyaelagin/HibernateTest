@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update auto</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/autos/{id}(id=${auto.getId()})}" th:object="${auto}">
+    <table border="0" cellpadding="5">
+        <tr>
+            <td><label for="id">ID: </label></td>
+            <td><input type="text" th:field="*{id}" readonly="readonly" id="id"/></td>
+        </tr>
+
+        <tr>
+            <td><label for="model">Enter model: </label></td>
+            <td><input type="text" th:field="*{model}" id="model"/>
+                <div style="color: red" th:if="${#fields.hasErrors('model')}" th:errors="*{model}">Model error</div>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="color">Enter color: </label></td>
+            <td><input type="text" th:field="*{color}" id="color"/>
+                <div style="color: red" th:if="${#fields.hasErrors('color')}" th:errors="*{color}">Color error</div>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="year">Enter year: </label></td>
+            <td><input type="date" th:field="*{year}" id="year"/>
+                <div style="color: red" th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Year error</div>
+            </td>
+        </tr>
+
+        <tr>
+
+            <td><label for="customer_id">Enter customer ID: </label></td>
+            <td><input type="number" min="0" th:field="*{customer.id}" id="customer_id"/>
+                <div style="color: red" th:if="${#fields.hasErrors('customer')}" th:errors="*{customer}">
+                    Customer_id error
+                </div>
+            </td>
+
+        </tr>
+
+        <tr>
+            <td>
+                <button type="submit">Update</button>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <a th:href="@{/autos}">
+                    <input type="button" value="Back"/>
+                </a>
+            </td>
+        </tr>
+
+    </table>
+</form>
+
+</body>
+</html>

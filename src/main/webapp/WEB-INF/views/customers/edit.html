@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update customer</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/customers/{id}(id=${customer.getId()})}" th:object="${customer}">
+    <table border="0" cellpadding="5">
+        <tr>
+            <td><label for="id">ID: </label></td>
+            <td><input type="text" th:field="*{id}" readonly="readonly" id="id"/></td>
+        </tr>
+
+        <tr>
+            <td><label for="tabnum">Enter tabnum:</label></td>
+            <td><input type="number" th:field="*{tabnum}" id="tabnum"/>
+                <div style="color: red" th:if="${#fields.hasErrors('tabnum')}" th:errors="*{tabnum}">Tabnum error</div>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="name">Enter name:</label></td>
+            <td><input type="text" th:field="*{name}" id="name"/>
+                <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="surname">Enter surname:</label></td>
+            <td><input type="text" th:field="*{surname}" id="surname"/>
+                <div style="color: red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Surname error</div>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="email">Enter email:</label></td>
+            <td><input type="text" th:field="*{email}" id="email"/>
+                <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label for="birth">Enter birth:</label></td>
+            <td><input type="date" th:field="*{birth}" id="birth"/>
+                <div style="color: red" th:if="${#fields.hasErrors('birth')}" th:errors="*{birth}">Birth error</div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <button type="submit">Update</button>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <a th:href="@{/customers}">
+                    <input type="button" value="Back"/>
+                </a>
+            </td>
+        </tr>
+
+    </table>
+</form>
+
+</body>
+</html>

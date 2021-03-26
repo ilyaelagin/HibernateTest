@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Auto</title>
+</head>
+<body>
+
+<h2>Auto:</h2>
+
+<table border="2" cellpadding="5">
+
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Model</th>
+        <th>Color</th>
+        <th>Year</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tr>
+        <td th:text="${auto.getId()}"></td>
+        <td th:text="${auto.getModel()}"></td>
+        <td th:text="${auto.getColor()}"></td>
+        <td th:text="${auto.getYear()}"></td>
+        <td>
+            <form th:method="DELETE" th:action="@{/autos/{id}(id=${auto.getId()})}">
+
+                <a th:href="@{/autos/{id}/edit(id=${auto.getId()})}">Edit</a>
+                &nbsp;&nbsp;&nbsp;
+
+                <input type="submit" value="Delete"/></form>
+        </td>
+    </tr>
+
+</table>
+
+<h2>Customer:</h2>
+
+<table border="1" cellpadding="5">
+
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Tabnum</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Email</th>
+        <th>Date of birth</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tbody th:if="${auto.getCustomer() != null}">
+    <tr>
+        <td>
+        <a th:href="@{/customers/{id}(id=${auto.getCustomer().getId()})}"
+           th:text="${auto.getCustomer.getId()}"></a>
+        </td>
+        <td th:text="${auto.getCustomer().getTabnum()}"></td>
+        <td th:text="${auto.getCustomer().getName()}"></td>
+        <td th:text="${auto.getCustomer().getSurname()}"></td>
+        <td th:text="${auto.getCustomer().getEmail()}"></td>
+        <td th:text="${auto.getCustomer().getBirth()}"></td>
+        <td>
+            <form th:method="DELETE" th:action="@{/customers/{id}(id=${auto.getCustomer().getId()})}">
+
+                <a th:href="@{/customers/{id}/edit(id=${auto.getCustomer().getId()})}">Edit</a>
+                &nbsp;&nbsp;&nbsp;
+
+                <input type="submit" value="Delete"/></form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+
+<br/>
+
+<a th:href="@{/autos}">
+    <input type="submit" value="Back"/>
+</a>
+
+</body>
+</html>
