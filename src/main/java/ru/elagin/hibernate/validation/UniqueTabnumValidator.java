@@ -2,7 +2,7 @@ package ru.elagin.hibernate.validation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.elagin.hibernate.models.Customer;
-import ru.elagin.hibernate.repository.CustomerRepository;
+import ru.elagin.hibernate.services.CustomerService;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -11,7 +11,7 @@ import java.util.List;
 public class UniqueTabnumValidator implements ConstraintValidator<UniqueTabnum, Customer> {
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerService customerService;
 
     @Override
     public void initialize(UniqueTabnum constraintAnnotation) {
@@ -20,15 +20,16 @@ public class UniqueTabnumValidator implements ConstraintValidator<UniqueTabnum, 
     @Override
     public boolean isValid(Customer customer, ConstraintValidatorContext validatorContext) {
 
-        if (customerRepository == null)
+        if (customerService == null)
             return true;
         if (customer.getTabnum() == null)
             return true;
 
-        List<Customer> customerList = customerRepository.index();
+        List<?> objects =  customerService.index().getObjects();
 
-        for (Customer client : customerList) {
+        for (Object object : objects) {
 
+            Customer client = (Customer) object;
             if (customer.getId() == null && customer.getTabnum().equals(client.getTabnum()) ||
                     customer.getTabnum().equals(client.getTabnum()) && !customer.getId().equals(client.getId())) {
 

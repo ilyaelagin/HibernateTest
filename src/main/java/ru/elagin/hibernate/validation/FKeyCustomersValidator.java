@@ -2,7 +2,8 @@ package ru.elagin.hibernate.validation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.elagin.hibernate.models.Customer;
-import ru.elagin.hibernate.repository.CustomerRepository;
+import ru.elagin.hibernate.response.Response;
+import ru.elagin.hibernate.services.CustomerService;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -10,7 +11,7 @@ import javax.validation.ConstraintValidatorContext;
 public class FKeyCustomersValidator implements ConstraintValidator<FKeyCustomers, Customer> {
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerService customerService;
 
     @Override
     public void initialize(FKeyCustomers constraintAnnotation) {
@@ -19,12 +20,18 @@ public class FKeyCustomersValidator implements ConstraintValidator<FKeyCustomers
     @Override
     public boolean isValid(Customer customer, ConstraintValidatorContext validatorContext) {
 
-        if (customerRepository == null)
+        if (customerService == null)
             return true;
         if (customer.getId() == null)
             return true;
 
-        if (customerRepository.show(customer.getId()) == null) {
+        Response response = customerService.show(customer.getId());
+
+        if (response.getError() != null) {
+            return true;
+        }
+
+        if (response.getObject() == null) {
             validatorContext.disableDefaultConstraintViolation();
             validatorContext.buildConstraintViolationWithTemplate("{validation.customer.foreign.key.error}")
                     .addConstraintViolation();

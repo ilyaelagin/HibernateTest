@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.elagin.hibernate.dto.CustomerFilter;
 import ru.elagin.hibernate.models.Customer;
 import ru.elagin.hibernate.repository.CustomerRepository;
-import ru.elagin.hibernate.response.CustomerResponse;
+import ru.elagin.hibernate.response.Response;
 
 @Service
 public class CustomerService {
@@ -17,54 +17,65 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
-    public CustomerResponse index(CustomerFilter customerFilter) {
-        CustomerResponse response = new CustomerResponse();
+    public Response index(CustomerFilter customerFilter) {
+        Response response = new Response();
         try {
-            response.setCustomerList(customerRepository.index(customerFilter));
+            response.setObjects(customerRepository.index(customerFilter));
         } catch (Exception e) {
             response.setError("Error occurred during the show all customers");
         }
         return response;
     }
 
-    public CustomerResponse show(Integer id) {
-        CustomerResponse response = new CustomerResponse();
+    public Response index() {
+        Response response = new Response();
         try {
-            response.setCustomer(customerRepository.show(id));
+            response.setObjects(customerRepository.index());
+        } catch (Exception e) {
+            response.setError("Error occurred during the show all customers");
+        }
+        return response;
+    }
+
+    public Response show(Integer id) {
+        Response response = new Response();
+        try {
+            if (customerRepository.show(id) != null)
+                response.setObject(customerRepository.show(id));
         } catch (Exception e) {
             response.setError("Error occurred during show data");
         }
         return response;
     }
 
-    public CustomerResponse save(Customer customer) {
+    public Response save(Customer customer) {
         try {
             customerRepository.save(customer);
-            return new CustomerResponse();
+            return new Response();
         } catch (Exception e) {
-            CustomerResponse response = new CustomerResponse();
+            Response response = new Response();
             response.setError("Error occurred during save data");
             return response;
         }
     }
 
-    public CustomerResponse update(Integer id, Customer customer) {
+    public Response update(Integer id, Customer customer) {
         try {
             customerRepository.update(id, customer);
-            return new CustomerResponse();
+            return new Response();
         } catch (Exception e) {
-            CustomerResponse response = new CustomerResponse();
+            Response response = new Response();
             response.setError("Error occurred during update data");
             return response;
         }
     }
 
-    public CustomerResponse delete(Integer id) {
+    public Response delete(Integer id) {
         try {
             customerRepository.delete(id);
-            return new CustomerResponse();
+            return new Response();
         } catch (Exception e) {
-            CustomerResponse response = new CustomerResponse();
+            Response response = new Response();
             response.setError("Error occurred during delete data");
             return response;
         }

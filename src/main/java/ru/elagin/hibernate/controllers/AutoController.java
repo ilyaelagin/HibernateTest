@@ -7,7 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.elagin.hibernate.dto.AutoFilter;
 import ru.elagin.hibernate.models.Auto;
-import ru.elagin.hibernate.response.AutoResponse;
+import ru.elagin.hibernate.response.Response;
 import ru.elagin.hibernate.services.AutoService;
 
 import javax.validation.Valid;
@@ -27,25 +27,25 @@ public class AutoController {
     public String index(Model model, @ModelAttribute("autoFilter") @Valid AutoFilter autoFilter, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "autos/index";
-        AutoResponse response = autoService.index(autoFilter);
+        Response response = autoService.index(autoFilter);
         String error = response.getError();
         if (error != null) {
             model.addAttribute("errorMessage", error);
-            return "autos/error";
+            return "error";
         }
-        model.addAttribute("autos", response.getAutoList());
+        model.addAttribute("autos", response.getObjects());
         return "autos/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        AutoResponse response = autoService.show(id);
+        Response response = autoService.show(id);
         String error = response.getError();
         if (error != null) {
             model.addAttribute("errorMessage", error);
-            return "autos/error";
+            return "error";
         }
-        model.addAttribute("auto", response.getAuto());
+        model.addAttribute("auto", response.getObject());
         return "autos/show";
     }
 
@@ -59,24 +59,24 @@ public class AutoController {
         if (bindingResult.hasErrors())
             return "autos/new";
 
-        AutoResponse response = autoService.save(auto);
+        Response response = autoService.save(auto);
         String error = response.getError();
         if (error != null) {
             model.addAttribute("errorMessage", error);
-            return "autos/error";
+            return "error";
         }
         return "redirect:/autos";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
-        AutoResponse response = autoService.show(id);
+        Response response = autoService.show(id);
         String error = response.getError();
         if (error != null) {
             model.addAttribute("errorMessage", error);
-            return "autos/error";
+            return "error";
         }
-        model.addAttribute("auto", response.getAuto());
+        model.addAttribute("auto", response.getObject());
         return "autos/edit";
     }
 
@@ -86,22 +86,22 @@ public class AutoController {
         if (bindingResult.hasErrors())
             return "autos/edit";
 
-        AutoResponse response = autoService.update(id, auto);
+        Response response = autoService.update(id, auto);
         String error = response.getError();
         if (error != null) {
             model.addAttribute("errorMessage", error);
-            return "autos/error";
+            return "error";
         }
         return "redirect:/autos";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id, Model model) {
-        AutoResponse response = autoService.delete(id);
+        Response response = autoService.delete(id);
         String error = response.getError();
         if (error != null) {
             model.addAttribute("errorMessage", error);
-            return "autos/error";
+            return "error";
         }
         return "redirect:/autos";
     }

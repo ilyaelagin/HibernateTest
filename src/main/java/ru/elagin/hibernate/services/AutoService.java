@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.elagin.hibernate.dto.AutoFilter;
 import ru.elagin.hibernate.models.Auto;
 import ru.elagin.hibernate.repository.AutoRepository;
-import ru.elagin.hibernate.response.AutoResponse;
+import ru.elagin.hibernate.response.Response;
 
 @Service
 public class AutoService {
@@ -17,58 +17,58 @@ public class AutoService {
         this.autoRepository = autoRepository;
     }
 
-    public AutoResponse index(AutoFilter autoFilter) {
-        AutoResponse response = new AutoResponse();
+    public Response index(AutoFilter autoFilter) {
+        Response response = new Response();
         try {
-            response.setAutoList(autoRepository.index(autoFilter));
+            response.setObjects(autoRepository.index(autoFilter));
         } catch (Exception e) {
             response.setError("Error occurred during the show all autos");
         }
         return response;
     }
 
-    public AutoResponse show(Integer id) {
-        AutoResponse response = new AutoResponse();
+    public Response show(Integer id) {
+        Response response = new Response();
         try {
-            response.setAuto(autoRepository.show(id));
+            response.setObject(autoRepository.show(id));
         } catch (Exception e) {
             response.setError("Error occurred during show data");
         }
         return response;
     }
 
-    public AutoResponse save(Auto auto) {
+    public Response save(Auto auto) {
         try {
             if (auto.getCustomer().getId() == null)
                 auto.setCustomer(null);
             autoRepository.save(auto);
-            return new AutoResponse();
+            return new Response();
         } catch (Exception e) {
-            AutoResponse response = new AutoResponse();
+            Response response = new Response();
             response.setError("Error occurred during save data");
             return response;
         }
     }
 
-    public AutoResponse update(Integer id, Auto auto) {
+    public Response update(Integer id, Auto auto) {
         try {
             if (auto.getCustomer().getId() == null)
                 auto.setCustomer(null);
             autoRepository.update(id, auto);
-            return new AutoResponse();
+            return new Response();
         } catch (Exception e) {
-            AutoResponse response = new AutoResponse();
-            response.setError("Error occurred update save data");
+            Response response = new Response();
+            response.setError("Error occurred during update data");
             return response;
         }
     }
 
-    public AutoResponse delete(Integer id) {
+    public Response delete(Integer id) {
         try {
             autoRepository.delete(id);
-            return new AutoResponse();
+            return new Response();
         } catch (Exception e) {
-            AutoResponse response = new AutoResponse();
+            Response response = new Response();
             response.setError("Error occurred delete save data");
             return response;
         }
