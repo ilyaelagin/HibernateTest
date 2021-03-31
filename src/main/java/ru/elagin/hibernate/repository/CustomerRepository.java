@@ -25,9 +25,6 @@ public class CustomerRepository implements Repository<Integer, Customer, Custome
             List<Customer> customers = session.createQuery("SELECT c FROM Customer c", Customer.class).getResultList();
             transaction.commit();
             return customers;
-        } catch (Exception e) {
-            System.out.println("ac jksvrnlenvrnvejhrnvjn v");
-            return new ArrayList<>();
         }
     }
 
